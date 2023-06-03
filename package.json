@@ -1,0 +1,24 @@
+{
+  "name": "visual-scroll-list-lqf",
+  "version": "1.0.0",
+  "description": "虚拟列表插件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.42.0",
+    "eslint-plugin-vue": "^9.14.1",
+    "husky": "^8.0.3"
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  }
+}
