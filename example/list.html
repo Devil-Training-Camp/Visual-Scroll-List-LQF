@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>visual page</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <visual-scroll-list :total="listData.length" :row-height="22.5" tag="ul">
+        <template #default="{index}">
+          <li>{{listData[index]}}</li>
+        </template>
+      </visual-scroll-list>
+    </div>
+    <script type="module">
+      import VisualScrollList from '../dist/visual-scroll-list.mjs'
+      const app = Vue.createApp({
+        data: () => ({
+          listData: [],
+        }),
+        mounted() {
+          this.listData.length = 10000
+          for (let i = 0; i < 10000; i++) {
+            this.listData[i] = i
+          }
+        },
+      })
+      app.use(VisualScrollList)
+      app.mount('#app')
+    </script>
+  </body>
+</html>
