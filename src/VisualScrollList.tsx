@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
 
 export default defineComponent({
   props: {
@@ -18,6 +18,10 @@ export default defineComponent({
       type: String,
       default: 'div',
     },
+    bufferSize: {
+      type: Number,
+      default: 0
+    }
   },
   setup(props, { slots, expose }) {
     const containerRef = ref<HTMLElement | null>()
@@ -26,26 +30,28 @@ export default defineComponent({
     const total = computed<number>(() => props.total)
     const limit = ref<number>()
     const startIndex = ref<number>(0)
+    const originStartIndex = ref<number>(0)
     const endIndex = ref<number>(total.value - 1)
     const scrollTop = ref<number>(0)
 
     const init = () => {
       limit.value = Math.ceil(height.value / rowHeight.value)
-      const index = Math.floor(scrollTop.value / rowHeight.value)
+      originStartIndex.value = Math.floor(scrollTop.value / rowHeight.value)
 
-      startIndex.value = Math.max(index, 0)
-      endIndex.value = Math.min(total.value - 1, startIndex.value + limit.value)
+      startIndex.value = Math.max(originStartIndex.value - props.bufferSize, 0)
+      endIndex.value = Math.min(total.value - 1, originStartIndex.value + limit.value + props.bufferSize)
     }
 
     const handleScroll = (event: Event) => {
       scrollTop.value = (event.target as HTMLDivElement).scrollTop
       const index = Math.floor(scrollTop.value / rowHeight.value)
 
-      if (index !== startIndex.value) {
-        startIndex.value = Math.max(index, 0)
+      if (index !== originStartIndex.value) {
+        originStartIndex.value = index
+        startIndex.value = Math.max(originStartIndex.value - props.bufferSize, 0)
         endIndex.value = Math.min(
           total.value - 1,
-          startIndex.value + limit.value!
+          originStartIndex.value + limit.value! + props.bufferSize
         )
       }
     }
@@ -88,11 +94,15 @@ export default defineComponent({
             overflowX: 'hidden',
             overflowY: 'auto',
             height: height.value + 'px',
-            position: 'relative',
           }}
           onScroll={handleScroll}
         >
-          {redrawRender()}
+          <div style={{
+            height: `${total.value * rowHeight.value}px`,
+            position: 'relative'
+          }}>
+            {redrawRender()}
+          </div>
         </div>
       )
     }

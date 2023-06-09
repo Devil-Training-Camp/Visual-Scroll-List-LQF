@@ -15,15 +15,15 @@
         </template>
       </visual-scroll-list>
     </div>
-    <script type="module">
-      import VisualScrollList from '../dist/visual-scroll-list.mjs'
+    <script src="../dist/visual-scroll-list.umd.js"></script>
+    <script>
       const app = Vue.createApp({
         data: () => ({
           listData: [],
         }),
         mounted() {
-          this.listData.length = 10000
-          for (let i = 0; i < 10000; i++) {
+          this.listData.length = 100000
+          for (let i = 0; i < this.listData.length; i++) {
             this.listData[i] = i
           }
         },
