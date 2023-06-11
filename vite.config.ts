@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 import { resolve } from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue-jsx'
-import externalGlobals from 'rollup-plugin-external-globals'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -10,9 +9,6 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [
       vue(),
-      // externalGlobals({
-      //   vue: 'Vue',
-      // }),
     ],
     resolve: {
       alias: {
@@ -30,7 +26,7 @@ export default defineConfig(({ command, mode }) => {
       outDir: 'dist',
       lib: {
         entry: resolve(__dirname, 'src/index'),
-        name: 'VisualScrollList',
+        name: 'VisualScrollLib',
         fileName: 'visual-scroll-list',
       },
       rollupOptions: {

@@ -9,11 +9,15 @@
   </head>
   <body>
     <div id="app">
-      <visual-scroll-list :total="listData.length" :row-height="22.5" tag="ul">
+      <dynamic-visual-scroll-list
+        :total="listData.length"
+        :estimate-row-height="22.5"
+        tag="ul"
+      >
         <template #default="{index}">
           <li>{{listData[index]}}</li>
         </template>
-      </visual-scroll-list>
+      </dynamic-visual-scroll-list>
     </div>
     <script src="../dist/visual-scroll-list.umd.js"></script>
     <script>
@@ -21,7 +25,7 @@
         data: () => ({
           listData: [],
         }),
-        mounted() {
+        created() {
           this.listData.length = 100000
           for (let i = 0; i < this.listData.length; i++) {
             this.listData[i] = i
