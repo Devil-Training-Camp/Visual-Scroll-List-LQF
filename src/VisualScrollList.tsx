@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 
 export default defineComponent({
   props: {
@@ -20,8 +20,8 @@ export default defineComponent({
     },
     bufferSize: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   setup(props, { slots, expose }) {
     const containerRef = ref<HTMLElement | null>()
@@ -39,7 +39,10 @@ export default defineComponent({
       originStartIndex.value = Math.floor(scrollTop.value / rowHeight.value)
 
       startIndex.value = Math.max(originStartIndex.value - props.bufferSize, 0)
-      endIndex.value = Math.min(total.value - 1, originStartIndex.value + limit.value + props.bufferSize)
+      endIndex.value = Math.min(
+        total.value - 1,
+        originStartIndex.value + limit.value + props.bufferSize
+      )
     }
 
     const handleScroll = (event: Event) => {
@@ -48,7 +51,10 @@ export default defineComponent({
 
       if (index !== originStartIndex.value) {
         originStartIndex.value = index
-        startIndex.value = Math.max(originStartIndex.value - props.bufferSize, 0)
+        startIndex.value = Math.max(
+          originStartIndex.value - props.bufferSize,
+          0
+        )
         endIndex.value = Math.min(
           total.value - 1,
           originStartIndex.value + limit.value! + props.bufferSize
@@ -97,10 +103,12 @@ export default defineComponent({
           }}
           onScroll={handleScroll}
         >
-          <div style={{
-            height: `${total.value * rowHeight.value}px`,
-            position: 'relative'
-          }}>
+          <div
+            style={{
+              height: `${total.value * rowHeight.value}px`,
+              position: 'relative',
+            }}
+          >
             {redrawRender()}
           </div>
         </div>
