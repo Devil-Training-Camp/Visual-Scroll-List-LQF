@@ -24,6 +24,7 @@ export default defineConfig(({ command, mode }) => {
     },
     build: {
       outDir: 'dist',
+      sourcemap: true,
       lib: {
         entry: resolve(__dirname, 'src/index'),
         name: 'VisualScrollLib',

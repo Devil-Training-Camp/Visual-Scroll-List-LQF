@@ -46,6 +46,7 @@ export default defineComponent({
     }
 
     const handleScroll = (event: Event) => {
+      if (!limit.value) return
       scrollTop.value = (event.target as HTMLDivElement).scrollTop
       const index = Math.floor(scrollTop.value / rowHeight.value)
 
@@ -57,7 +58,7 @@ export default defineComponent({
         )
         endIndex.value = Math.min(
           total.value - 1,
-          originStartIndex.value + limit.value! + props.bufferSize
+          originStartIndex.value + limit.value + props.bufferSize
         )
       }
     }
@@ -87,7 +88,7 @@ export default defineComponent({
                 top: `${i * rowHeight.value}px`,
               }}
             >
-              {slots.default!({ index: i })}
+              {slots.default && slots.default({ index: i })}
             </div>
           )
         }
