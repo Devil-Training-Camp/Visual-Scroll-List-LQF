@@ -11,7 +11,8 @@ interface CachePosition {
   index: number
   top: number
   bottom: number
-  itemHeight: number
+  itemHeight: number,
+  over: boolean
 }
 
 const ListItem = defineComponent({
@@ -71,6 +72,7 @@ export default defineComponent({
           itemHeight: estimatedHeight,
           top: estimatedHeight * index,
           bottom: estimatedHeight * (index + 1),
+          over: false,
         }
       })
     }
@@ -110,9 +112,20 @@ export default defineComponent({
     }
 
     const sizeChangeHandle = (index: number, target: HTMLDivElement) => {
-      const { top, bottom, height } = target.getBoundingClientRect()
-      console.log(index, top)
-      itemsMetaData.value[index] = { index, top, bottom, itemHeight: height }
+      const { height } = target.getBoundingClientRect()
+      // console.log(index, top)
+      const { itemHeight, over } = itemsMetaData.value[index]
+      if (over) return
+      itemsMetaData.value[index].over = true
+      const dValue = itemHeight - height
+      if (dValue !== 0) {
+        itemsMetaData.value[index].bottom -= dValue
+        for (let k = index + 1; k < itemsMetaData.value.length; k++) {
+          itemsMetaData.value[k].top = itemsMetaData.value[k - 1].bottom
+          itemsMetaData.value[k].bottom = itemsMetaData.value[k].bottom - dValue
+        }
+      }
+
     }
 
     initVirtualScroll()
